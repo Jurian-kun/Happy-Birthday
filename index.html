@@ -10,7 +10,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        /* General Styles */
         body {
             margin: 0;
             font-family: 'Inter', sans-serif;
@@ -19,7 +18,6 @@
             transition: background 0.5s;
         }
 
-        /* Dark mode */
         body.dark {
             background: linear-gradient(135deg, #1f2937, #111827);
         }
@@ -45,9 +43,7 @@
             position: relative;
             width: 100%;
             max-width: 800px;
-            max-height: 80vh; /* allow scrolling if content is long */
-            overflow-y: auto;
-            padding: 40px;
+            padding: 0;
             background: rgba(255, 255, 255, 0.509);
             backdrop-filter: blur(10px);
             border-radius: 20px;
@@ -58,12 +54,20 @@
             transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
             pointer-events: none;
             margin-bottom: 40px;
+            display: flex;
+            flex-direction: column;
         }
 
         .step.active {
             opacity: 1;
             transform: translateY(0);
             pointer-events: all;
+        }
+
+        .step-content {
+            overflow-y: auto;
+            max-height: 60vh;
+            padding: 40px 20px;
         }
 
         .btn {
@@ -127,6 +131,11 @@
             display: inline-block;
         }
 
+        .reason-container {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
         .reason-card {
             background: white;
             border-radius: 15px;
@@ -171,14 +180,12 @@
             z-index: 1;
         }
 
-        /* Dark mode cards */
         body.dark .step,
         body.dark .reason-card {
             background: rgba(31, 41, 55, 0.6);
             color: white;
         }
 
-        /* Navigation buttons container */
         #nav-buttons {
             display: flex;
             justify-content: space-between;
@@ -188,7 +195,6 @@
         }
     </style>
 
-    <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.json">
 </head>
 
@@ -201,92 +207,101 @@
         </div>
 
         <div id="content">
-            <!-- Navigation Buttons -->
             <div id="nav-buttons">
-                <button class="btn" id="prev-btn">&larr; Prev</button>
-                <button class="btn" id="next-btn">&rarr; Next</button>
+                <button class="btn" id="prev-btn">← Prev</button>
+                <button class="btn" id="next-btn">Next →</button>
             </div>
 
-            <!-- Step 1: Initial Reveal -->
+            <!-- Step 1 -->
             <div class="step active" id="step1">
-                <div class="emoji heart-beat">❤️</div>
-                <h1 class="text-4xl md:text-5xl font-bold mb-6 text-gradient">Hey My Dear Wifey</h1>
-                <p class="text-xl text-gray-700 mb-8">I made something special for you...</p>
-                <button class="btn" id="start-btn">Let's Begin</button>
+                <div class="step-content">
+                    <div class="emoji heart-beat">❤️</div>
+                    <h1 class="text-4xl md:text-5xl font-bold mb-6 text-gradient">Hey My Dear Wifey</h1>
+                    <p class="text-xl text-gray-700 mb-8">I made something special for you...</p>
+                    <button class="btn" id="start-btn">Let's Begin</button>
+                </div>
             </div>
 
-            <!-- Step 2: Birthday Message -->
+            <!-- Step 2 -->
             <div class="step" id="step2">
-                <div class="emoji">🎉</div>
-                <h2 class="text-3xl md:text-4xl font-bold mb-6 text-gradient">Happy Birthday Babiii! 🎂❤️</h2>
-                <p class="text-base text-gray-700 mb-1">
-                    I know today isn’t just a celebration for you, it’s a reminder of everything you’ve survived. And I just want you to know that the fact that you’re still here, still trying, still breathing despite all the pain you’ve carried… that alone already makes you strong in ways most people will never understand.
-                </p>
-                <p class="text-base text-gray-700 mb-1">
-                    You’ve been through things that no one your age should ever have to go through. You were forced to grow up too fast, to be strong even when you were tired, to keep going even when you felt unseen. And yet, you’re still kind, still caring, still capable of loving deeply. That’s something special about you, something real.
-                </p>
-                <p class="text-base text-gray-700 mb-1">
-                    Today, I don’t want you to think about what went wrong, what hurt, or what you lost. I want you to remember that you did your best to live another year. And that’s worth celebrating. I’m proud of you for staying, for choosing to exist even on days when it felt unbearable.
-                </p>
-                <p class="text-base text-gray-700 mb-1">
-                    You deserve warmth, love, and peace, not just today, but every day. And even when things feel heavy, please remember that you matter okay? You are not invisible. You are not replaceable, and you are deeply loved.
-                </p>
-                <p class="text-base text-gray-700 mb-1">
-                    Happy birthday, babi. I’m really glad you’re here with me. 🎄🎂🤍
-                </p>
-                <button class="btn" id="next-btn-2">What makes you special?</button>
+                <div class="step-content">
+                    <div class="emoji">🎉</div>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6 text-gradient">Happy Birthday Babiii! 🎂❤️</h2>
+                    <p class="text-base text-gray-700 mb-1">
+                        I know today isn’t just a celebration for you, it’s a reminder of everything you’ve survived. And I just want you to know that the fact that you’re still here, still trying, still breathing despite all the pain you’ve carried… that alone already makes you strong in ways most people will never understand.
+                    </p>
+                    <p class="text-base text-gray-700 mb-1">
+                        You’ve been through things that no one your age should ever have to go through. You were forced to grow up too fast, to be strong even when you were tired, to keep going even when you felt unseen. And yet, you’re still kind, still caring, still capable of loving deeply. That’s something special about you, something real.
+                    </p>
+                    <p class="text-base text-gray-700 mb-1">
+                        Today, I don’t want you to think about what went wrong, what hurt, or what you lost. I want you to remember that you did your best to live another year. And that’s worth celebrating. I’m proud of you for staying, for choosing to exist even on days when it felt unbearable.
+                    </p>
+                    <p class="text-base text-gray-700 mb-1">
+                        You deserve warmth, love, and peace, not just today, but every day. And even when things feel heavy, please remember that you matter okay? You are not invisible. You are not replaceable, and you are deeply loved.
+                    </p>
+                    <p class="text-base text-gray-700 mb-1">
+                        Happy birthday, babi. I’m really glad you’re here with me. 🎄🎂🤍
+                    </p>
+                    <button class="btn" id="next-btn-2">What makes you special?</button>
+                </div>
             </div>
 
-            <!-- Step 3: Reasons You're Amazing -->
+            <!-- Step 3 -->
             <div class="step" id="step3">
-                <h2 class="text-3xl md:text-4xl font-bold mb-8 text-gradient">Here's why you're incredible</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                    <div class="reason-card">
-                        <div class="emoji text-3xl">💪</div>
-                        <h3 class="text-xl font-bold mb-2 text-pink-600">Your Strength</h3>
-                        <p class="text-gray-700">Your independence and resilience inspire me every day. You face challenges with courage and grace.</p>
+                <div class="step-content">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-8 text-gradient">Here's why you're incredible</h2>
+                    <div class="reason-container grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                        <div class="reason-card">
+                            <div class="emoji text-3xl">💪</div>
+                            <h3 class="text-xl font-bold mb-2 text-pink-600">Your Strength</h3>
+                            <p class="text-gray-700">Your independence and resilience inspire me every day. You face challenges with courage and grace.</p>
+                        </div>
+                        <div class="reason-card">
+                            <div class="emoji text-3xl">🧠</div>
+                            <h3 class="text-xl font-bold mb-2 text-pink-600">Your Mind</h3>
+                            <p class="text-gray-700">You’re incredibly smart and thoughtful. I love how you approach life with logic and curiosity.</p>
+                        </div>
+                        <div class="reason-card">
+                            <div class="emoji text-3xl">🌸</div>
+                            <h3 class="text-xl font-bold mb-2 text-pink-600">Your Beauty</h3>
+                            <p class="text-gray-700">You’re stunning inside and out. Your presence lights up everything around you.</p>
+                        </div>
                     </div>
-                    <div class="reason-card">
-                        <div class="emoji text-3xl">🧠</div>
-                        <h3 class="text-xl font-bold mb-2 text-pink-600">Your Mind</h3>
-                        <p class="text-gray-700">You’re incredibly smart and thoughtful. I love how you approach life with logic and curiosity.</p>
-                    </div>
-                    <div class="reason-card">
-                        <div class="emoji text-3xl">🌸</div>
-                        <h3 class="text-xl font-bold mb-2 text-pink-600">Your Beauty</h3>
-                        <p class="text-gray-700">You’re stunning inside and out. Your presence lights up everything around you.</p>
-                    </div>
+                    <button class="btn" id="next-btn-3">A Little Surprise</button>
                 </div>
-                <button class="btn" id="next-btn-3">A Little Surprise</button>
             </div>
 
-            <!-- Step 4: Online Adventures -->
+            <!-- Step 4 -->
             <div class="step" id="step4">
-                <div class="emoji">📸</div>
-                <h2 class="text-3xl md:text-4xl font-bold mb-6 text-gradient">Our Online Adventures</h2>
-                <div class="bg-gradient-to-r from-pink-200 to-rose-200 rounded-xl p-8 mb-8 flex flex-col justify-center items-center">
-                    <img src="crush.webp" height="200" width="200" alt="">
-                    <p class="text-lg text-gray-700 italic mt-2">(All the fun chats, memes, and silly moments we’ve shared online)</p>
+                <div class="step-content">
+                    <div class="emoji">📸</div>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6 text-gradient">Our Online Adventures</h2>
+                    <div class="bg-gradient-to-r from-pink-200 to-rose-200 rounded-xl p-8 mb-8 flex flex-col justify-center items-center">
+                        <img src="crush.webp" height="200" width="200" alt="">
+                        <p class="text-lg text-gray-700 italic mt-2">(All the fun chats, memes, and silly moments we’ve shared online)</p>
+                    </div>
+                    <p class="text-lg text-gray-700 mb-6">
+                        Even if we haven’t met in person yet, every chat, laugh, and shared memory has made these moments really special.
+                        I treasure the little things that make us smile, even from afar.
+                    </p>
+                    <button class="btn" id="next-btn-4">One Last Thing</button>
                 </div>
-                <p class="text-lg text-gray-700 mb-6">
-                    Even if we haven’t met in person yet, every chat, laugh, and shared memory has made these moments really special.
-                    I treasure the little things that make us smile, even from afar.
-                </p>
-                <button class="btn" id="next-btn-4">One Last Thing</button>
             </div>
 
-            <!-- Step 5: Final Wish -->
+            <!-- Step 5 -->
             <div class="step" id="step5">
-                <div class="emoji">🎂</div>
-                <h2 class="text-3xl md:text-4xl font-bold mb-6 text-gradient">My Birthday Wish For You</h2>
-                <p class="text-lg text-gray-700 mb-4">
-                    On your birthday, I hope you feel all the love and happiness you truly deserve. I wish for your day to be filled with laughter, surprises, sweet moments, and maybe even a little indulgence, because someone as wonderful as you deserves the best of everything. May your year be filled with joy, laughter, and dreams come true. May you always know how special you are to me and to everyone lucky enough to know you. Thank you for being you, for letting me into your world, and for sharing this life with me. I’m so proud of you, I love you, and I hope this birthday is just the beginning of an amazing year full of love, joy, and unforgettable moments. ❤️
-                </p>
-                <p class="text-xl font-semibold text-pink-600 mb-8">
-                    Happy Birthday, my baby! ❤️
-                </p>
-                <button class="btn" id="confetti-btn">Celebrate!</button>
-                <p class="mt-8 text-gray-500">Made with ❤️ just for you</p>
+                <div class="step-content">
+                    <div class="emoji">🎂</div>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6 text-gradient">My Birthday Wish For You</h2>
+                    <p class="text-lg text-gray-700 mb-4">
+                        On your birthday, I hope you feel all the love and happiness you truly deserve. I wish for your day to be filled with laughter, surprises, sweet moments, and maybe even a little indulgence, because someone as wonderful as you deserves the best of everything. May your year be filled with joy, laughter, and dreams come true. May you always know how special you are to me and to everyone lucky enough to know you. Thank you for being you, for letting me into your world, and for sharing this life with me. I’m so proud of you, I love you, and I hope this birthday is just the beginning of an amazing year full of love, joy, and unforgettable moments. ❤️
+                    </p>
+                    <p class="text-xl font-semibold text-pink-600 mb-8">
+                        Happy Birthday, my baby! ❤️
+                    </p>
+                    <button class="btn" id="confetti-btn">Celebrate!</button>
+                    <p class="mt-8 text-gray-500">Made with ❤️ just for you</p>
+                </div>
             </div>
         </div>
     </div>
@@ -386,14 +401,18 @@
             document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
             document.getElementById(`step${stepNumber}`).classList.add('active');
             updateProgressBar();
-            if (stepNumber === totalSteps) document.getElementById('confetti-btn').classList.add('animate-pulse');
+
+            // show/hide nav buttons
+            document.getElementById('prev-btn').style.display = (stepNumber === 1) ? 'none' : 'inline-block';
+            document.getElementById('next-btn').style.display = (stepNumber === totalSteps) ? 'none' : 'inline-block';
+
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Button navigation for desktop
         document.getElementById('prev-btn').addEventListener('click', () => {
             if (currentStep > 1) { currentStep--; showStep(currentStep); }
         });
+
         document.getElementById('next-btn').addEventListener('click', () => {
             if (currentStep < totalSteps) { currentStep++; showStep(currentStep); }
         });
@@ -418,7 +437,7 @@
             });
         });
 
-        // --- Swipe Gestures ---
+        // Swipe gestures
         let startX = 0;
         let endX = 0;
         document.addEventListener('touchstart', e => { startX = e.touches[0].clientX; });
@@ -428,16 +447,17 @@
             else if (endX - startX > 50 && currentStep > 1) { currentStep--; showStep(currentStep); }
         });
 
-        // --- Dark Mode Auto ---
+        // Auto dark mode
         function checkDarkMode() {
             const hour = new Date().getHours();
             if (hour >= 19 || hour < 6) document.body.classList.add('dark');
             else document.body.classList.remove('dark');
         }
         checkDarkMode();
-        setInterval(checkDarkMode, 60000); // check every minute
+        setInterval(checkDarkMode, 60000);
 
         updateProgressBar();
+        showStep(currentStep);
     </script>
 </body>
 
