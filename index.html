@@ -10,12 +10,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
+        html, body {
+            height: 100%;
+        }
+
         body {
             margin: 0;
             font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, #f9a8d4, #f3e8ff);
             touch-action: manipulation;
             transition: background 0.5s;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         body.dark {
@@ -25,12 +33,14 @@
         #app {
             position: relative;
             width: 100%;
+            height: 100%;
         }
 
         #content {
             position: relative;
             z-index: 10;
             width: 100%;
+            height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -40,34 +50,45 @@
         }
 
         .step {
-            position: relative;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) translateY(20px);
             width: 100%;
             max-width: 800px;
-            padding: 0;
             background: rgba(255, 255, 255, 0.509);
             backdrop-filter: blur(10px);
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             text-align: center;
             opacity: 0;
-            transform: translateY(20px);
             transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
             pointer-events: none;
-            margin-bottom: 40px;
             display: flex;
             flex-direction: column;
+            overflow: hidden;
+            max-height: 90%;
         }
 
         .step.active {
             opacity: 1;
-            transform: translateY(0);
+            transform: translate(-50%, -50%) translateY(0);
             pointer-events: all;
         }
 
         .step-content {
             overflow-y: auto;
-            max-height: 60vh;
-            padding: 40px 20px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: auto;
+            gap: 10px;
         }
 
         .btn {
@@ -78,7 +99,6 @@
             border-radius: 50px;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 20px;
             box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
             transition: all 0.3s ease;
         }
@@ -104,25 +124,11 @@
         }
 
         @keyframes heartbeat {
-            0% {
-                transform: scale(1);
-            }
-
-            25% {
-                transform: scale(1.1);
-            }
-
-            50% {
-                transform: scale(1);
-            }
-
-            75% {
-                transform: scale(1.1);
-            }
-
-            100% {
-                transform: scale(1);
-            }
+            0% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
 
         .emoji {
@@ -148,6 +154,12 @@
         .reason-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark .step,
+        body.dark .reason-card {
+            background: rgba(31, 41, 55, 0.6);
+            color: white;
         }
 
         #progress-container {
@@ -179,46 +191,26 @@
             height: 100%;
             z-index: 1;
         }
-
-        body.dark .step,
-        body.dark .reason-card {
-            background: rgba(31, 41, 55, 0.6);
-            color: white;
-        }
-
-        #nav-buttons {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            max-width: 800px;
-            margin-bottom: 20px;
-        }
     </style>
-
-    <link rel="manifest" href="manifest.json">
 </head>
 
 <body>
     <div id="app">
         <div id="canvas-container"></div>
-
         <div id="progress-container">
             <div id="progress-bar"></div>
         </div>
 
         <div id="content">
-            <div id="nav-buttons">
-                <button class="btn" id="prev-btn">← Prev</button>
-                <button class="btn" id="next-btn">Next →</button>
-            </div>
-
             <!-- Step 1 -->
             <div class="step active" id="step1">
                 <div class="step-content">
                     <div class="emoji heart-beat">❤️</div>
                     <h1 class="text-4xl md:text-5xl font-bold mb-6 text-gradient">Hey My Dear Wifey</h1>
                     <p class="text-xl text-gray-700 mb-8">I made something special for you...</p>
-                    <button class="btn" id="start-btn">Let's Begin</button>
+                    <div class="btn-container">
+                        <button class="btn" id="start-btn">Let's Begin</button>
+                    </div>
                 </div>
             </div>
 
@@ -227,7 +219,7 @@
                 <div class="step-content">
                     <div class="emoji">🎉</div>
                     <h2 class="text-3xl md:text-4xl font-bold mb-6 text-gradient">Happy Birthday Babiii! 🎂❤️</h2>
-                    <p class="text-base text-gray-700 mb-1">
+                      <p class="text-base text-gray-700 mb-1">
                         I know today isn’t just a celebration for you, it’s a reminder of everything you’ve survived. And I just want you to know that the fact that you’re still here, still trying, still breathing despite all the pain you’ve carried… that alone already makes you strong in ways most people will never understand.
                     </p>
                     <p class="text-base text-gray-700 mb-1">
@@ -242,7 +234,10 @@
                     <p class="text-base text-gray-700 mb-1">
                         Happy birthday, babi. I’m really glad you’re here with me. 🎄🎂🤍
                     </p>
-                    <button class="btn" id="next-btn-2">What makes you special?</button>
+                    <div class="btn-container">
+                        <button class="btn" id="prev-btn-2">← Prev</button>
+                        <button class="btn" id="next-btn-2">What makes you special?</button>
+                    </div>
                 </div>
             </div>
 
@@ -251,7 +246,7 @@
                 <div class="step-content">
                     <h2 class="text-3xl md:text-4xl font-bold mb-8 text-gradient">Here's why you're incredible</h2>
                     <div class="reason-container grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                        <div class="reason-card">
+                         <div class="reason-card">
                             <div class="emoji text-3xl">💪</div>
                             <h3 class="text-xl font-bold mb-2 text-pink-600">Your Strength</h3>
                             <p class="text-gray-700">Your independence and resilience inspire me every day. You face challenges with courage and grace.</p>
@@ -267,7 +262,10 @@
                             <p class="text-gray-700">You’re stunning inside and out. Your presence lights up everything around you.</p>
                         </div>
                     </div>
-                    <button class="btn" id="next-btn-3">A Little Surprise</button>
+                    <div class="btn-container">
+                        <button class="btn" id="prev-btn-3">← Prev</button>
+                        <button class="btn" id="next-btn-3">A Little Surprise</button>
+                    </div>
                 </div>
             </div>
 
@@ -284,7 +282,10 @@
                         Even if we haven’t met in person yet, every chat, laugh, and shared memory has made these moments really special.
                         I treasure the little things that make us smile, even from afar.
                     </p>
-                    <button class="btn" id="next-btn-4">One Last Thing</button>
+                    <div class="btn-container">
+                        <button class="btn" id="prev-btn-4">← Prev</button>
+                        <button class="btn" id="next-btn-4">One Last Thing</button>
+                    </div>
                 </div>
             </div>
 
@@ -299,10 +300,14 @@
                     <p class="text-xl font-semibold text-pink-600 mb-8">
                         Happy Birthday, my baby! ❤️
                     </p>
-                    <button class="btn" id="confetti-btn">Celebrate!</button>
+                    <div class="btn-container">
+                        <button class="btn" id="prev-btn-5">← Prev</button>
+                        <button class="btn" id="confetti-btn">Celebrate!</button>
+                    </div>
                     <p class="mt-8 text-gray-500">Made with ❤️ just for you</p>
                 </div>
             </div>
+
         </div>
     </div>
 
@@ -325,10 +330,8 @@
         heartShape.bezierCurveTo(x + 0.5, y + 3.5, x + 2, y + 2.5, x + 2, y + 1.5);
         heartShape.bezierCurveTo(x + 2, y + 1.5, x + 2, y, x + 1, y);
         heartShape.bezierCurveTo(x + 0.5, y, x + 0.5, y + 0.5, x + 0.5, y + 0.5);
-
         const extrudeSettings = { depth: 0.5, bevelEnabled: true, bevelSegments: 3, bevelSize: 0.2, bevelThickness: 0.3 };
         const heartGeometry = new THREE.ExtrudeGeometry(heartShape, extrudeSettings);
-
         const hearts = [];
         const colors = [0xff6b6b, 0xff8e8e, 0xffb3b3, 0xffd8d8, 0xff9e9e, 0xffc1c1, 0xff6b8e, 0xff8eb3];
 
@@ -401,63 +404,35 @@
             document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
             document.getElementById(`step${stepNumber}`).classList.add('active');
             updateProgressBar();
-
-            // show/hide nav buttons
-            document.getElementById('prev-btn').style.display = (stepNumber === 1) ? 'none' : 'inline-block';
-            document.getElementById('next-btn').style.display = (stepNumber === totalSteps) ? 'none' : 'inline-block';
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        document.getElementById('prev-btn').addEventListener('click', () => {
-            if (currentStep > 1) { currentStep--; showStep(currentStep); }
-        });
-
-        document.getElementById('next-btn').addEventListener('click', () => {
-            if (currentStep < totalSteps) { currentStep++; showStep(currentStep); }
-        });
-
-        // Step buttons
         document.getElementById('start-btn').addEventListener('click', () => { currentStep = 2; showStep(currentStep); });
         document.getElementById('next-btn-2').addEventListener('click', () => { currentStep = 3; showStep(currentStep); });
         document.getElementById('next-btn-3').addEventListener('click', () => { currentStep = 4; showStep(currentStep); });
         document.getElementById('next-btn-4').addEventListener('click', () => { currentStep = 5; showStep(currentStep); });
 
-        // Confetti
+        document.getElementById('prev-btn-2').addEventListener('click', () => { currentStep = 1; showStep(currentStep); });
+        document.getElementById('prev-btn-3').addEventListener('click', () => { currentStep = 2; showStep(currentStep); });
+        document.getElementById('prev-btn-4').addEventListener('click', () => { currentStep = 3; showStep(currentStep); });
+        document.getElementById('prev-btn-5').addEventListener('click', () => { currentStep = 4; showStep(currentStep); });
+
         document.getElementById('confetti-btn').addEventListener('click', () => {
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ff0000', '#ff69b4', '#ff1493', '#ffc0cb'] });
-            setTimeout(() => { confetti({ particleCount: 30, spread: 60, origin: { y: 0.5 }, shapes: ['heart'], colors: ['#ff0000', '#ff69b4'] }); }, 300);
-            setTimeout(() => {
-                confetti({ particleCount: 20, angle: 60, spread: 55, origin: { x: 0 }, shapes: ['heart'], colors: ['#ff0000', '#ff69b4'] });
-                confetti({ particleCount: 20, angle: 120, spread: 55, origin: { x: 1 }, shapes: ['heart'], colors: ['#ff0000', '#ff69b4'] });
-            }, 600);
-            hearts.forEach(h => {
-                gsap.to(h.position, { y: h.position.y - 30, duration: 3, ease: "power1.out" });
-                gsap.to(h.material, { opacity: 0, duration: 3, ease: "power1.out" });
-            });
+            confetti({ particleCount: 200, spread: 70, origin: { y: 0.6 } });
         });
 
-        // Swipe gestures
-        let startX = 0;
-        let endX = 0;
-        document.addEventListener('touchstart', e => { startX = e.touches[0].clientX; });
+        // --- Dark Mode based on time ---
+        const hour = new Date().getHours();
+        if (hour >= 19 || hour < 6) document.body.classList.add('dark');
+
+        // --- Swipe Gestures ---
+        let touchStartX = 0;
+        let touchEndX = 0;
+        document.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; });
         document.addEventListener('touchend', e => {
-            endX = e.changedTouches[0].clientX;
-            if (startX - endX > 50 && currentStep < totalSteps) { currentStep++; showStep(currentStep); }
-            else if (endX - startX > 50 && currentStep > 1) { currentStep--; showStep(currentStep); }
+            touchEndX = e.changedTouches[0].screenX;
+            if (touchEndX < touchStartX - 50 && currentStep < totalSteps) { currentStep++; showStep(currentStep); }
+            if (touchEndX > touchStartX + 50 && currentStep > 1) { currentStep--; showStep(currentStep); }
         });
-
-        // Auto dark mode
-        function checkDarkMode() {
-            const hour = new Date().getHours();
-            if (hour >= 19 || hour < 6) document.body.classList.add('dark');
-            else document.body.classList.remove('dark');
-        }
-        checkDarkMode();
-        setInterval(checkDarkMode, 60000);
-
-        updateProgressBar();
-        showStep(currentStep);
     </script>
 </body>
 
